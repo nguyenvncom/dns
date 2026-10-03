@@ -1,0 +1,32 @@
+services:
+  dns-server:
+    container_name: technitium
+    hostname: technitium
+
+    image: docker.io/technitium/dns-server:latest
+
+    ports:
+      - "5380:5380/tcp"
+      - "53:53/udp"
+      - "53:53/tcp"
+
+    environment:
+      - DNS_SERVER_DOMAIN=technitium
+      - DNS_SERVER_LOG_USING_LOCAL_TIME=true
+
+    volumes:
+      - config:/etc/dns
+      - logs:/var/log/technitium/dns
+
+    restart: unless-stopped
+
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    external: true 
+    
+volumes:
+  config:
+  logs:
